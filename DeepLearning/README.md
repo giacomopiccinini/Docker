@@ -16,7 +16,7 @@ Even with Nvidia images, GPUs may not be immediately visible to our TensorFlow a
 
 2. `sudo /usr/bin/nvidia-uninstall`
 
-At this point, you should be able to successfully use the `nvidia-smi` command and get back something meaningful. This will be useful later on, when double-checking that Docker recognise GPUs. If this didn't work, please consult this [StackOverflow question](https://stackoverflow.com/questions/43022843/nvidia-nvml-driver-library-version-mismatch#comment73133147_43022843). After that, we need to fix the interplay between Docker and Nvidia. On Ubuntu 18.04 (AWS EC2 istance), what worked for me were the following steps (from [this question](https://stackoverflow.com/questions/59008295/add-nvidia-runtime-to-docker-runtimes)):
+At this point, you should be able to successfully use the `nvidia-smi` command and get back something meaningful. This will be useful later on, when double-checking that Docker recognises GPUs. If this didn't work, please consult this [StackOverflow question](https://stackoverflow.com/questions/43022843/nvidia-nvml-driver-library-version-mismatch#comment73133147_43022843). After that, we need to fix the interplay between Docker and Nvidia. On Ubuntu 18.04 (AWS EC2 instance), what worked for me were the following steps (from [this question](https://stackoverflow.com/questions/59008295/add-nvidia-runtime-to-docker-runtimes)):
 
 1. Download the Nvidia container runtime:
 
@@ -53,6 +53,7 @@ You should get back something like
  Default Runtime: runc
 ```
 
+After completing this procedure, and after having built the image and created the container, you could open up the bash prompt of the container (see below) and check that `nvidia-smi` gives back something meaningful. 
 
 ## Docker setup
 
@@ -60,7 +61,7 @@ To use Docker, first proceed at creating the image. It is important that weights
 
 `sh Scripts/build.sh`
 
-All necessary python packages are installed, the code copied in `home/app` from the local `app/` directory. It is just the standard way of creating an image starting from the Dockerfile. 
+All necessary python packages are installed, the code copied in `/home/app` from the local `app/` directory. It is just the standard way of creating an image starting from the Dockerfile. 
 
 Now it is time to create and run a container. Before doing so, please ensure that you have your input data copied in the `Input/` directory on your local machine: when running `sh Scripts/run.sh`, the directories `Input/` and `Output/` will be mounted in `/home/app` of the container: this means that *local* `Input/Output` directories are synchronised with *container* `Input/Output`: what happens on the one side also happens on the other! So, simply execute:
 
@@ -72,7 +73,7 @@ Now that our container is up and running we can start playing with it. If we sim
 
 `docker exec -it my_container bash`
 
-This will open up the bash prompt, and we can start using Ubuntu's CLI commands. Remeber to type `exit` to close it. In order to run (python) scripts in a container, we need not have its shell open (even though we could do that). It is sufficient to call, from our local machine:
+This will open up the bash prompt, and we can start using Ubuntu's CLI commands. Remember to type `exit` to close it. In order to run (python) scripts in a container, we need not have its shell open (even though we could do that). It is sufficient to call, from our local machine:
 
 `docker exect -it my_container python my_script.py`
 
