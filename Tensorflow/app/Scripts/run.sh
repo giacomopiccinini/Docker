@@ -1,0 +1,54 @@
+#!/bin/bash
+
+############################################################
+# Help                                                     #
+############################################################
+
+Help()
+{
+   # Display Help
+   echo
+   echo "Syntax: run.sh [-h | -p <parameter>]"
+   echo "options:"
+   echo "-p     Pass the parameter."
+   echo "-h     Print this Help."
+   echo
+}
+
+############################################################
+############################################################
+# Main program                                             #
+############################################################
+############################################################
+
+
+############################################################
+# Process the input options. Add options as needed.        #
+############################################################
+
+# Get the options
+while getopts ":hp:" option; do
+   case $option in
+      h) # display Help
+         Help
+         exit;;
+      p) # Enter a pattern
+         parameter=$OPTARG;;
+     #\?) 
+      *) # Invalid option
+         echo
+         echo "Error: Invalid option!"
+         Help
+         exit;;
+   esac
+done
+
+# Exit if no option is passed
+if [ $OPTIND -eq 1 ]; then 
+    echo
+    echo "No options were passed."
+    Help
+    exit 
+fi
+
+echo "Hello $parameter!"
